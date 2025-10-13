@@ -21,7 +21,7 @@ class MemberStatusBadge extends StatelessWidget {
       if (controller.statusError.value.isNotEmpty ||
           controller.memberStatusResponse.value == null) {
         return Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
           decoration: BoxDecoration(
             color: Colors.red.shade100,
             borderRadius: BorderRadius.circular(15),
@@ -35,7 +35,7 @@ class MemberStatusBadge extends StatelessWidget {
                 'Error',
                 style: TextStyle(
                   color: Colors.red.shade700,
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -47,7 +47,7 @@ class MemberStatusBadge extends StatelessWidget {
       return Tooltip(
         message: 'Member Status',
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
           decoration: BoxDecoration(
             color: controller.getStatusColor(),
             borderRadius: BorderRadius.circular(12),
@@ -64,7 +64,7 @@ class MemberStatusBadge extends StatelessWidget {
             controller.getStatusText(),
             style: TextStyle(
               color: Colors.white,
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: FontWeight.w700,
             ),
           ),

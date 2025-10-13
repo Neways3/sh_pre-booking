@@ -90,7 +90,6 @@ class PersonalInfoController extends GetxController {
     super.onClose();
   }
 
-  // Initialize all data
   Future<void> _initializeData() async {
     try {
       // Load dropdown options first
@@ -108,7 +107,6 @@ class PersonalInfoController extends GetxController {
     }
   }
 
-  // Load user information
   Future<void> loadUserInfo() async {
     try {
       isLoading.value = true;
@@ -126,11 +124,9 @@ class PersonalInfoController extends GetxController {
         personalInfo.value = response.personalInfo;
         documentInfo.value = response.documentInfo!;
 
-        // Wait for options to be loaded before populating form
         if (isOptionsLoaded.value) {
           await _populateFormFields();
         } else {
-          // Listen for options to be loaded
           ever(isOptionsLoaded, (loaded) async {
             if (loaded) {
               await _populateFormFields();
@@ -160,14 +156,12 @@ class PersonalInfoController extends GetxController {
     }
   }
 
-  // Load dropdown options
   Future<void> loadDropdownOptions() async {
-    if (isOptionsLoaded.value) return; // Prevent multiple loading
+    if (isOptionsLoaded.value) return;
 
     try {
       isLoadingOptions.value = true;
 
-      // Load all dropdown options with error handling for each
       final futures = [
         _loadOptionsSafely('gender'),
         _loadOptionsSafely('find-us'),
@@ -213,7 +207,6 @@ class PersonalInfoController extends GetxController {
     }
   }
 
-  // Safely load options with error handling
   Future<List<DropdownOption>> _loadOptionsSafely(String endpoint) async {
     try {
       final options = await _apiService.getOptions(endpoint);
@@ -221,11 +214,10 @@ class PersonalInfoController extends GetxController {
       return options;
     } catch (e) {
       debugPrint('Error loading options for $endpoint: $e');
-      return <DropdownOption>[]; // Return empty list on error
+      return <DropdownOption>[];
     }
   }
 
-  // Load thanas by district
   Future<void> loadThanas(String districtId) async {
     if (districtId.isEmpty) {
       thanaOptions.clear();
@@ -235,7 +227,7 @@ class PersonalInfoController extends GetxController {
 
     try {
       isLoadingThanas.value = true;
-      selectedThana.value = null; // Clear selected thana first
+      selectedThana.value = null;
 
       debugPrint('Loading thanas for district: $districtId');
       final thanas = await _apiService.getThanasByDistrict(districtId);
@@ -259,7 +251,6 @@ class PersonalInfoController extends GetxController {
     }
   }
 
-  // Populate form fields with existing data
   Future<void> _populateFormFields() async {
     final personal = personalInfo.value;
     if (personal == null) {
@@ -330,7 +321,6 @@ class PersonalInfoController extends GetxController {
     debugPrint('Form fields populated successfully');
   }
 
-  // Helper method to find option by ID
   DropdownOption? _findOptionById(List<DropdownOption> options, String? id) {
     if (id == null || id.isEmpty || options.isEmpty) return null;
 
@@ -343,18 +333,16 @@ class PersonalInfoController extends GetxController {
     }
   }
 
-  // Handle district change
   void onDistrictChanged(DropdownOption? district) {
     selectedDistrict.value = district;
-    selectedThana.value = null; // Clear thana selection
-    thanaOptions.clear(); // Clear thana options
+    selectedThana.value = null;
+    thanaOptions.clear();
 
     if (district != null) {
       loadThanas(district.id);
     }
   }
 
-  // Pick photo from gallery or camera
   Future<void> pickPhoto(ImageSource source) async {
     try {
       final XFile? image = await _picker.pickImage(
@@ -420,40 +408,41 @@ class PersonalInfoController extends GetxController {
     }
   }
 
-  // Show photo picker options
   void showPhotoPickerOptions() {
     Get.bottomSheet(
-      Container(
-        padding: const EdgeInsets.all(16),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Select Photo',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 16),
-            ListTile(
-              leading: const Icon(Icons.photo_library),
-              title: const Text('Gallery'),
-              onTap: () {
-                Get.back();
-                pickPhoto(ImageSource.gallery);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.camera_alt),
-              title: const Text('Camera'),
-              onTap: () {
-                Get.back();
-                pickPhoto(ImageSource.camera);
-              },
-            ),
-          ],
+      SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                'Select Photo',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 16),
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Gallery'),
+                onTap: () {
+                  Get.back();
+                  pickPhoto(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () {
+                  Get.back();
+                  pickPhoto(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -499,7 +488,6 @@ class PersonalInfoController extends GetxController {
     return true;
   }
 
-  // Update personal information
   Future<void> updatePersonalInfo() async {
     if (!_validateForm()) return;
 
@@ -589,7 +577,6 @@ class PersonalInfoController extends GetxController {
     }
   }
 
-  // Select date of birth
   Future<void> selectDateOfBirth(BuildContext context) async {
     final currentDate = DateTime.now();
     final currentDateOfBirth = dateOfBirthController.text.isNotEmpty
@@ -621,7 +608,6 @@ class PersonalInfoController extends GetxController {
     }
   }
 
-  // Reset form
   void resetForm() {
     fatherNameController.clear();
     addressController.clear();
@@ -643,11 +629,9 @@ class PersonalInfoController extends GetxController {
     selectedPhoto.value = null;
     imageBase64.value = '';
 
-    // Clear thana options when district is reset
     thanaOptions.clear();
   }
 
-  // Refresh all data
   Future<void> refreshData() async {
     isDataLoaded.value = false;
     isOptionsLoaded.value = false;

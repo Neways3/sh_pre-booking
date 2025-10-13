@@ -30,11 +30,10 @@ class HomeService extends GetxService {
     }
   }
 
-  // NEW: Get member status
   Future<MemberStatusResponse> getMemberStatus(String userId) async {
     try {
       final response = await _apiService.post(
-        AppConstants.memberStatusEndpoint, // Add this to your AppConstants
+        AppConstants.memberStatusEndpoint,
         includeUserId: true,
       );
 

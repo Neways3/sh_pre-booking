@@ -6,7 +6,6 @@ import 'package:sh_m/modules/personal_info/services/document_service.dart';
 class DocumentBinding extends Bindings {
   @override
   void dependencies() {
-    // Use permanent binding to prevent disposal issues
     Get.put<DocumentController>(DocumentController());
   }
 }

@@ -5,6 +5,9 @@ class AppConstants {
       'kAXan6SFy5U3UrzHMMQgCzFEHwU9jzuBF6kbsFMjRsCSY8fFVhwhRTZvBqrMbcK3';
   static const String documentUrl = 'https://documents.neways3.com/';
 
+  static const String privacyPolicyUrl =
+      'https://erp.neways3.com/help-center/privacy-policy/privacy-policy-sh-prebooking';
+
   // Storage Keys
   static const String userKey = 'user';
   static const String tokenKey = 'token';
@@ -24,6 +27,8 @@ class AppConstants {
   static const String submitNewPasswordEndpoint =
       '/registration/submit-new-password';
   static const String memberStatusEndpoint = '/registration/get-member-status';
+  static const String versionUpgradeUrl =
+      "https://erp.neways3.com/api/application/versions/get-app-version";
 
   // Identification Types
   static const List<String> identificationTypes = [
@@ -31,4 +36,7 @@ class AppConstants {
     'Passport',
     'Driving License',
   ];
+
+  // Testing OTP
+  static const String testingOtp = '772972';
 }

@@ -10,7 +10,6 @@ class OtpVerificationView extends GetView<AuthController> {
     final otp = arguments?['otp'] ?? '';
     final type = arguments?['type'] ?? 'registration';
 
-    // Set the received data
     controller.currentUserPhone.value = phone;
     controller.generatedOtp.value = otp;
     controller.otpVerificationType.value = type;
@@ -64,7 +63,6 @@ class OtpVerificationView extends GetView<AuthController> {
             children: [
               const SizedBox(height: 30),
 
-              // Icon
               Container(
                 width: 72,
                 height: 72,
@@ -89,7 +87,6 @@ class OtpVerificationView extends GetView<AuthController> {
               ),
               const SizedBox(height: 28),
 
-              // Title
               const Text(
                 'Enter code',
                 style: TextStyle(
@@ -102,7 +99,6 @@ class OtpVerificationView extends GetView<AuthController> {
               ),
               const SizedBox(height: 10),
 
-              // Description
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
@@ -126,7 +122,6 @@ class OtpVerificationView extends GetView<AuthController> {
               ),
               const SizedBox(height: 12),
 
-              // Verification Type Badge
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 14,

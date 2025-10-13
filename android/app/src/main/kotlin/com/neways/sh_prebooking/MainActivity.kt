@@ -1,4 +1,4 @@
-package com.example.sh_m
+package com.neways.sh_prebooking
 
 import io.flutter.embedding.android.FlutterActivity
 

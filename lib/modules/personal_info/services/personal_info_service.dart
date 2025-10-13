@@ -32,7 +32,6 @@ class PersonalInfoService extends GetxService {
     }
   }
 
-  // Get dropdown options
   Future<List<DropdownOption>> getOptions(String type) async {
     try {
       var requestData = {
@@ -43,8 +42,7 @@ class PersonalInfoService extends GetxService {
 
       final response = await dio.Dio(
         dio.BaseOptions(
-          baseUrl:
-              'https://erp.neways3.com/', // Update with your actual endpoint
+          baseUrl: 'https://erp.neways3.com/',
           connectTimeout: const Duration(seconds: 30),
           receiveTimeout: const Duration(seconds: 30),
         ),
@@ -66,7 +64,6 @@ class PersonalInfoService extends GetxService {
     }
   }
 
-  // Update personal information
   Future<Map<String, dynamic>> updatePersonalInformation(
     UpdatePersonalInfoRequest request,
   ) async {
@@ -105,7 +102,6 @@ class PersonalInfoService extends GetxService {
     }
   }
 
-  // Get thanas by district ID
   Future<List<DropdownOption>> getThanasByDistrict(String districtId) async {
     try {
       var requestData = {
@@ -116,8 +112,7 @@ class PersonalInfoService extends GetxService {
       };
       final response = await dio.Dio(
         dio.BaseOptions(
-          baseUrl:
-              'https://erp.neways3.com/', // Update with your actual endpoint
+          baseUrl: 'https://erp.neways3.com/',
           connectTimeout: const Duration(seconds: 30),
           receiveTimeout: const Duration(seconds: 30),
         ),

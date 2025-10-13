@@ -1,8 +1,19 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sh_m/core/constants/app_constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../controllers/auth_controller.dart';
 
 class RegisterView extends GetView<AuthController> {
+  void _launchPrivacyPolicy() async {
+    final Uri url = Uri.parse(AppConstants.privacyPolicyUrl);
+
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,24 +133,24 @@ class RegisterView extends GetView<AuthController> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      if (controller.selectedImage.value != null)
-                        TextButton(
-                          onPressed: controller.removeSelectedImage,
-                          style: TextButton.styleFrom(
-                            foregroundColor: Colors.red.shade400,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 4,
-                            ),
-                          ),
-                          child: const Text(
-                            'Remove',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
+                      // if (controller.selectedImage.value != null)
+                      //   TextButton(
+                      //     onPressed: controller.removeSelectedImage,
+                      //     style: TextButton.styleFrom(
+                      //       foregroundColor: Colors.red.shade400,
+                      //       padding: const EdgeInsets.symmetric(
+                      //         horizontal: 12,
+                      //         vertical: 4,
+                      //       ),
+                      //     ),
+                      //     child: const Text(
+                      //       'Remove',
+                      //       style: TextStyle(
+                      //         fontSize: 13,
+                      //         fontWeight: FontWeight.w600,
+                      //       ),
+                      //     ),
+                      //   ),
                     ],
                   ),
                 ),
@@ -243,7 +254,7 @@ class RegisterView extends GetView<AuthController> {
                   ),
                 ],
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 10),
 
               // Email Field
               _buildLabel('Email'),
@@ -268,6 +279,8 @@ class RegisterView extends GetView<AuthController> {
               const SizedBox(height: 10),
               Obx(
                 () => DropdownButtonFormField<String>(
+                  dropdownColor: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
                   value: controller.selectedIdentificationType.value,
                   style: const TextStyle(
                     fontSize: 15,
@@ -440,6 +453,34 @@ class RegisterView extends GetView<AuthController> {
                 ),
               ),
               const SizedBox(height: 28),
+
+              Text.rich(
+                TextSpan(
+                  text: 'By creating account, you are agree to our ',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: const Color(0xFF6B7280),
+                    height: 1.4,
+                  ),
+                  children: [
+                    TextSpan(
+                      text: 'Privacy Policy',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFF3B82F6),
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = _launchPrivacyPolicy,
+                    ),
+                    const TextSpan(text: '.'),
+                  ],
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 20),
 
               // Register Button
               Obx(

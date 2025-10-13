@@ -7,4 +7,5 @@ class AppRoutes {
   static const DOCUMENTS = '/documents';
   static const FORGOT_PASSWORD = '/forgot-password';
   static const RESET_PASSWORD = '/reset-password';
+  static const SPLASH_SCREEN = '/splash-screen';
 }

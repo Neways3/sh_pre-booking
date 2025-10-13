@@ -17,11 +17,10 @@ class AuthService extends GetxService {
       final response = await _apiService.post(
         AppConstants.getRegistrationOtpEndpoint,
         data: request.toJson(),
-        includeApiSecret: true, // Include api_secret
-        includeUserId: false, // Don't include user_id for registration
+        includeApiSecret: true,
+        includeUserId: false,
       );
 
-      // json decoding if response data is a string
       final responseData = response.data is String
           ? jsonDecode(response.data)
           : response.data;
@@ -41,12 +40,10 @@ class AuthService extends GetxService {
       final response = await _apiService.post(
         AppConstants.verifyOtpEndpoint,
         data: request,
-        includeApiSecret: true, // Include api_secret
-        includeUserId:
-            false, // Don't include user_id (it's in the request data)
+        includeApiSecret: true,
+        includeUserId: false,
       );
 
-      // json decoding if response data is a string
       final responseData = response.data is String
           ? jsonDecode(response.data)
           : response.data;
@@ -68,8 +65,8 @@ class AuthService extends GetxService {
       final response = await _apiService.post(
         AppConstants.submitRegistrationEndpoint,
         data: request.toJson(),
-        includeApiSecret: true, // Include api_secret
-        includeUserId: false, // Don't include user_id for registration
+        includeApiSecret: true,
+        includeUserId: false,
       );
 
       final responseData = response.data is String
@@ -91,11 +88,10 @@ class AuthService extends GetxService {
       final response = await _apiService.post(
         AppConstants.loginEndpoint,
         data: request.toJson(),
-        includeApiSecret: true, // Include api_secret
-        includeUserId: false, // Don't include user_id for login
+        includeApiSecret: true,
+        includeUserId: false,
       );
 
-      // Decode the response data if it's a JSON string
       final responseData = response.data is String
           ? jsonDecode(response.data)
           : response.data;
@@ -122,13 +118,12 @@ class AuthService extends GetxService {
     }
   }
 
-  // Example of API that needs user_id (like getting user profile)
   Future<ApiResponse<User>> getUserProfile() async {
     try {
       final response = await _apiService.post(
         'get-user-profile',
-        includeApiSecret: true, // Include api_secret
-        includeUserId: true, // Include user_id from storage
+        includeApiSecret: true,
+        includeUserId: true,
       );
 
       User? user;
@@ -146,13 +141,12 @@ class AuthService extends GetxService {
     }
   }
 
-  // Example of API that doesn't need api_secret (like public endpoints)
   Future<ApiResponse> getPublicData() async {
     try {
       final response = await _apiService.post(
         'get-public-data',
-        includeApiSecret: false, // Don't include api_secret
-        includeUserId: false, // Don't include user_id
+        includeApiSecret: false,
+        includeUserId: false,
       );
 
       return ApiResponse.fromJson(response.data, null);

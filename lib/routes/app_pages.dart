@@ -5,6 +5,7 @@ import 'package:sh_m/modules/personal_info/bindings/document_binding.dart';
 import 'package:sh_m/modules/personal_info/bindings/personal_info_binding.dart';
 import 'package:sh_m/modules/personal_info/views/documents_screen.dart';
 import 'package:sh_m/modules/personal_info/views/personal_info_screen.dart';
+import 'package:sh_m/modules/splash_screen/presentation/splash_screen.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/login_view.dart';
 import '../modules/auth/views/register_view.dart';
@@ -65,5 +66,6 @@ class AppPages {
       page: () => const ResetPasswordView(),
       binding: AuthBinding(),
     ),
+    GetPage(name: AppRoutes.SPLASH_SCREEN, page: () => const SplashScreen()),
   ];
 }

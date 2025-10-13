@@ -131,8 +131,8 @@ class PersonalInfoScreen extends StatelessWidget {
               child: Stack(
                 children: [
                   Container(
-                    width: 80,
-                    height: 80,
+                    width: 85,
+                    height: 85,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       gradient: _getPhotoImage(controller) == null
@@ -186,7 +186,7 @@ class PersonalInfoScreen extends StatelessWidget {
             Text(
               'Tap to change photo',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 13,
                 color: Colors.grey.shade500,
                 fontWeight: FontWeight.w500,
               ),
@@ -443,8 +443,8 @@ class PersonalInfoScreen extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
           color: Colors.grey[600],
         ),
         prefixIcon: Icon(icon, size: 18, color: Colors.grey.shade500),
@@ -484,8 +484,8 @@ class PersonalInfoScreen extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w500,
+          fontSize: 14,
+          fontWeight: FontWeight.w700,
           color: Colors.grey[600],
         ),
         prefixIcon: Icon(icon, size: 18, color: Colors.grey.shade500),
@@ -542,8 +542,8 @@ class PersonalInfoScreen extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           labelStyle: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w500,
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
             color: Colors.grey[600],
           ),
           prefixIcon: Icon(icon, size: 18, color: Colors.grey.shade500),
@@ -576,6 +576,13 @@ class PersonalInfoScreen extends StatelessWidget {
   }
 
   Widget _buildDocumentsSection(DocumentController documentController) {
+    bool isImageFile(String filename) {
+      final ext = filename.toLowerCase();
+      return ext.endsWith('.jpg') ||
+          ext.endsWith('.jpeg') ||
+          ext.endsWith('.png');
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -680,6 +687,7 @@ class PersonalInfoScreen extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(14, 0, 14, 14),
                   child: Column(
                     children: documentController.userDocuments.map((doc) {
+                      final isImage = isImageFile(doc.attachment);
                       return Container(
                         margin: const EdgeInsets.only(bottom: 8),
                         decoration: BoxDecoration(
@@ -697,11 +705,17 @@ class PersonalInfoScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(12),
                               child: Row(
                                 children: [
-                                  Icon(
-                                    Icons.insert_drive_file_rounded,
-                                    color: Colors.grey.shade400,
-                                    size: 18,
-                                  ),
+                                  isImage
+                                      ? Icon(
+                                          Icons.image,
+                                          color: Colors.blueAccent.shade100,
+                                          size: 18,
+                                        )
+                                      : Icon(
+                                          Icons.insert_drive_file_rounded,
+                                          color: Colors.orangeAccent.shade100,
+                                          size: 18,
+                                        ),
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Text(
@@ -799,54 +813,6 @@ class PersonalInfoScreen extends StatelessWidget {
       );
     }
     return null;
-  }
-
-  void _showResetConfirmation(PersonalInfoController controller) {
-    Get.dialog(
-      AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: const Text(
-          'Reset Form?',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 17),
-        ),
-        content: const Text(
-          'All your changes will be lost. This action cannot be undone.',
-          style: TextStyle(fontSize: 14),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: Text(
-              'Cancel',
-              style: TextStyle(color: Colors.grey.shade400),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Get.back();
-              controller.resetForm();
-              Get.snackbar(
-                'Success',
-                'Form has been reset',
-                backgroundColor: Colors.blueAccent.shade400,
-                colorText: Colors.white,
-                snackPosition: SnackPosition.BOTTOM,
-                margin: const EdgeInsets.all(16),
-                borderRadius: 10,
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red.shade400,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-            child: const Text('Reset'),
-          ),
-        ],
-      ),
-    );
   }
 
   void _showConfirmationModal(PersonalInfoController controller) {

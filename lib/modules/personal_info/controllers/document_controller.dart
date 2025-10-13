@@ -9,10 +9,8 @@ import 'package:sh_m/modules/home/controllers/home_controller.dart';
 import 'package:sh_m/modules/personal_info/services/document_service.dart';
 
 class DocumentController extends GetxController {
-  // Service instance
   final DocumentService _documentService = DocumentService();
 
-  // Observable states
   final documentTypes = <DropdownOption>[].obs;
   final userDocuments = <DocumentInfo>[].obs;
   final selectedDocuments = <DocumentUploadItem>[].obs;
@@ -27,7 +25,6 @@ class DocumentController extends GetxController {
     loadInitialData();
   }
 
-  // Load document types and user documents
   Future<void> loadInitialData() async {
     isLoading.value = true;
     try {
@@ -43,7 +40,6 @@ class DocumentController extends GetxController {
     }
   }
 
-  // Load document types
   Future<void> loadDocumentTypes() async {
     try {
       final types = await _documentService.getDocumentTypes('documents-type');
@@ -53,7 +49,6 @@ class DocumentController extends GetxController {
     }
   }
 
-  // Load user documents
   Future<void> loadUserDocuments() async {
     try {
       final response = await _documentService.getUserInformation();
@@ -63,19 +58,16 @@ class DocumentController extends GetxController {
     }
   }
 
-  // Add document to upload list
   void addDocument(DropdownOption type) {
     selectedDocuments.add(
       DocumentUploadItem(documentType: type, filePath: null),
     );
   }
 
-  // Remove document from upload list
   void removeDocument(int index) {
     selectedDocuments.removeAt(index);
   }
 
-  // Pick file from gallery
   Future<void> pickImageFromGallery(int index) async {
     try {
       final ImagePicker picker = ImagePicker();
@@ -99,7 +91,6 @@ class DocumentController extends GetxController {
     }
   }
 
-  // Pick file from camera
   Future<void> pickImageFromCamera(int index) async {
     try {
       final ImagePicker picker = ImagePicker();
@@ -123,7 +114,6 @@ class DocumentController extends GetxController {
     }
   }
 
-  // Pick file (PDF, documents)
   Future<void> pickFile(int index) async {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -144,51 +134,48 @@ class DocumentController extends GetxController {
     }
   }
 
-  // Show file picker options
   void showFilePickerOptions(int index) {
     Get.bottomSheet(
-      Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.photo_library, color: Colors.blue),
-              title: const Text('Choose from Gallery'),
-              onTap: () {
-                Get.back();
-                pickImageFromGallery(index);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.camera_alt, color: Colors.green),
-              title: const Text('Take Photo'),
-              onTap: () {
-                Get.back();
-                pickImageFromCamera(index);
-              },
-            ),
-            ListTile(
-              leading: const Icon(
-                Icons.insert_drive_file,
-                color: Colors.orange,
+      SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library, color: Colors.blue),
+                title: const Text('Choose from Gallery'),
+                onTap: () {
+                  Get.back();
+                  pickImageFromGallery(index);
+                },
               ),
-              title: const Text('Choose Document'),
-              onTap: () {
-                Get.back();
-                pickFile(index);
-              },
-            ),
-            const SizedBox(height: 10),
-            TextButton(
-              onPressed: () => Get.back(),
-              child: const Text('Cancel'),
-            ),
-          ],
+              ListTile(
+                leading: const Icon(Icons.camera_alt, color: Colors.green),
+                title: const Text('Take Photo'),
+                onTap: () {
+                  Get.back();
+                  pickImageFromCamera(index);
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.insert_drive_file,
+                  color: Colors.orange,
+                ),
+                title: const Text('Choose Document'),
+                onTap: () {
+                  Get.back();
+                  pickFile(index);
+                },
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
       ),
     );
@@ -352,19 +339,19 @@ class DocumentController extends GetxController {
   }
 
   // Get available document types (not already uploaded)
-  List<DropdownOption> getAvailableDocumentTypes() {
-    final uploadedTypeIds = userDocuments
-        .map((doc) => doc.documentTypeId)
-        .toSet();
-    final selectedTypeIds = selectedDocuments
-        .map((doc) => doc.documentType.id)
-        .toSet();
+  // List<DropdownOption> getAvailableDocumentTypes() {
+  //   final uploadedTypeIds = userDocuments
+  //       .map((doc) => doc.documentTypeId)
+  //       .toSet();
+  //   final selectedTypeIds = selectedDocuments
+  //       .map((doc) => doc.documentType.id)
+  //       .toSet();
 
-    return documentTypes.where((type) {
-      return !uploadedTypeIds.contains(type.id) &&
-          !selectedTypeIds.contains(type.id);
-    }).toList();
-  }
+  //   return documentTypes.where((type) {
+  //     return !uploadedTypeIds.contains(type.id) &&
+  //         !selectedTypeIds.contains(type.id);
+  //   }).toList();
+  // }
 }
 
 // Helper class for document upload items

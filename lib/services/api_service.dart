@@ -5,9 +5,8 @@ import 'storage_service.dart';
 
 class ApiService extends GetxService {
   late Dio _dio;
-  final String baseUrl =
-      AppConstants.apiBaseUrl; // Replace with your actual API URL
-  final String apiSecret = AppConstants.apiSecret; // Add your API secret
+  final String baseUrl = AppConstants.apiBaseUrl;
+  final String apiSecret = AppConstants.apiSecret;
 
   @override
   void onInit() {
@@ -20,7 +19,6 @@ class ApiService extends GetxService {
       ),
     );
 
-    // Add interceptors for logging
     _dio.interceptors.add(
       LogInterceptor(requestBody: true, responseBody: true),
     );
@@ -34,15 +32,12 @@ class ApiService extends GetxService {
     bool includeUserId = false,
   }) async {
     try {
-      // Create FormData
       FormData formData = FormData();
 
-      // Add api_secret if required
       if (includeApiSecret) {
         formData.fields.add(MapEntry('api_secret', apiSecret));
       }
 
-      // Add user_id if required and available
       if (includeUserId) {
         final user = StorageService.getUser();
         if (user != null) {
@@ -50,7 +45,6 @@ class ApiService extends GetxService {
         }
       }
 
-      // Add all other data as form fields
       if (data != null) {
         data.forEach((key, value) {
           if (value != null) {
@@ -77,7 +71,6 @@ class ApiService extends GetxService {
     bool includeUserId = false,
   }) async {
     try {
-      // For GET requests, add api_secret and user_id to query parameters
       Map<String, dynamic> finalQueryParams = queryParameters ?? {};
 
       if (includeApiSecret) {

@@ -5,7 +5,6 @@ import 'package:sh_m/modules/personal_info/controllers/personal_info_controller.
 class PersonalInfoBinding extends Bindings {
   @override
   void dependencies() {
-    // Use permanent binding to prevent disposal issues
     Get.put<PersonalInfoController>(PersonalInfoController());
     Get.put<DocumentController>(DocumentController());
   }

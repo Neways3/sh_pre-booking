@@ -70,262 +70,283 @@ class HomeView extends GetView<HomeController> {
       length: 3,
       child: Scaffold(
         backgroundColor: Colors.grey[50],
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                expandedHeight: 180,
-                floating: false,
-                pinned: true,
-                elevation: 0,
-                backgroundColor: Colors.white,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Obx(() {
-                    if (controller.isLoading.value) {
-                      return Container(
-                        color: Colors.white,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.blueAccent.shade400,
-                          ),
-                        ),
-                      );
-                    }
-                    return Container(
-                      color: Colors.white,
-                      child: SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 12, 20, 12),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
+        body: SafeArea(
+          child: NestedScrollView(
+            headerSliverBuilder: (context, innerBoxIsScrolled) {
+              return [
+                SliverAppBar(
+                  expandedHeight: 180,
+                  floating: false,
+                  pinned: true,
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  flexibleSpace: Container(
+                    color: Colors.white,
+                    child: FlexibleSpaceBar(
+                      background: Obx(() {
+                        if (controller.isLoading.value) {
+                          return Container(
+                            color: Colors.white,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.blueAccent.shade400,
+                              ),
+                            ),
+                          );
+                        }
+                        return Container(
+                          color: Colors.white,
+                          child: SafeArea(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                20,
+                                12,
+                                20,
+                                12,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  // Profile Photo
-                                  Stack(
+                                  Row(
                                     children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.blueAccent.shade400
-                                                  .withOpacity(0.15),
-                                              blurRadius: 12,
-                                              spreadRadius: 2,
+                                      // Profile Photo
+                                      Stack(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: const Color.fromARGB(
+                                                    255,
+                                                    207,
+                                                    210,
+                                                    214,
+                                                  ).withOpacity(0.15),
+                                                  blurRadius: 12,
+                                                  spreadRadius: 2,
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                        child: CircleAvatar(
-                                          radius: 36,
-                                          backgroundColor: Colors.grey[100],
-                                          backgroundImage:
-                                              controller
-                                                      .userInfo
-                                                      .value
-                                                      ?.photo !=
-                                                  null
-                                              ? NetworkImage(
+                                            child: CircleAvatar(
+                                              radius: 38,
+                                              backgroundColor: Colors.grey[100],
+                                              backgroundImage:
                                                   controller
-                                                      .userInfo
-                                                      .value!
-                                                      .photo,
-                                                )
-                                              : null,
-                                          child:
-                                              controller
-                                                      .userInfo
-                                                      .value
-                                                      ?.photo ==
-                                                  null
-                                              ? Icon(
-                                                  Icons.person_rounded,
-                                                  size: 36,
-                                                  color: Colors.grey[400],
-                                                )
-                                              : null,
-                                        ),
-                                      ),
-                                      Positioned(
-                                        right: 0,
-                                        bottom: 0,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(4),
-                                          decoration: BoxDecoration(
-                                            color: getStatusColor(
-                                              controller
-                                                      .userInfo
-                                                      .value
-                                                      ?.status ??
-                                                  '0',
-                                            ),
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color: Colors.white,
-                                              width: 2,
+                                                          .userInfo
+                                                          .value
+                                                          ?.photo !=
+                                                      null
+                                                  ? NetworkImage(
+                                                      controller
+                                                          .userInfo
+                                                          .value!
+                                                          .photo,
+                                                    )
+                                                  : null,
+                                              child:
+                                                  controller
+                                                          .userInfo
+                                                          .value
+                                                          ?.photo ==
+                                                      null
+                                                  ? Icon(
+                                                      Icons.person_rounded,
+                                                      size: 36,
+                                                      color: Colors.grey[400],
+                                                    )
+                                                  : null,
                                             ),
                                           ),
-                                          child: const Icon(
-                                            Icons.check,
-                                            size: 10,
-                                            color: Colors.white,
+                                          Positioned(
+                                            right: 0,
+                                            bottom: 0,
+                                            child: Container(
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                color: getStatusColor(
+                                                  controller
+                                                          .userInfo
+                                                          .value
+                                                          ?.status ??
+                                                      '0',
+                                                ),
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  color: Colors.white,
+                                                  width: 2,
+                                                ),
+                                              ),
+                                              child: const Icon(
+                                                Icons.check,
+                                                size: 10,
+                                                color: Colors.white,
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 16),
-                                  // Name and Status
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          controller.userInfo.value?.name ??
-                                              'User',
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.black87,
-                                            letterSpacing: -0.5,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Wrap(
+                                      const SizedBox(width: 16),
+                                      // Name and Status
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            MemberStatusBadge(),
-                                            SizedBox(width: 5),
-                                            Material(
-                                              color: Colors.transparent,
-                                              child: InkWell(
-                                                onTap: _handleEditTap,
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 4,
-                                                      ),
-                                                  decoration: BoxDecoration(
-                                                    color:
-                                                        controller.isEditEnabled
-                                                        ? Colors
-                                                              .blueAccent
-                                                              .shade400
-                                                        : Colors.grey.shade600,
+                                            Text(
+                                              controller.userInfo.value?.name ??
+                                                  'User',
+                                              style: const TextStyle(
+                                                fontSize: 22,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.black87,
+                                                letterSpacing: -0.5,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Wrap(
+                                              children: [
+                                                MemberStatusBadge(),
+                                                SizedBox(width: 5),
+                                                Material(
+                                                  color: Colors.transparent,
+                                                  child: InkWell(
+                                                    onTap: _handleEditTap,
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                           12,
                                                         ),
-                                                    border: Border.all(
-                                                      color:
-                                                          controller
-                                                              .isEditEnabled
-                                                          ? Colors
-                                                                .blueAccent
-                                                                .shade400
-                                                          : Colors
-                                                                .grey
-                                                                .shade600,
-                                                      width: 1,
-                                                    ),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: const [
-                                                      Icon(
-                                                        Icons.edit_rounded,
-                                                        size: 10,
-                                                        color: Colors.white,
-                                                      ),
-                                                      SizedBox(width: 5),
-                                                      Text(
-                                                        'Edit Info',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 11,
-                                                          fontWeight:
-                                                              FontWeight.w600,
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.symmetric(
+                                                            horizontal: 10,
+                                                            vertical: 7,
+                                                          ),
+                                                      decoration: BoxDecoration(
+                                                        color:
+                                                            controller
+                                                                .isEditEnabled
+                                                            ? Colors
+                                                                  .blueAccent
+                                                                  .shade400
+                                                            : Colors
+                                                                  .grey
+                                                                  .shade600,
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                              12,
+                                                            ),
+                                                        border: Border.all(
+                                                          color:
+                                                              controller
+                                                                  .isEditEnabled
+                                                              ? Colors
+                                                                    .blueAccent
+                                                                    .shade400
+                                                              : Colors
+                                                                    .grey
+                                                                    .shade600,
+                                                          width: 1,
                                                         ),
                                                       ),
-                                                    ],
+                                                      child: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: const [
+                                                          Icon(
+                                                            Icons.edit_rounded,
+                                                            size: 10,
+                                                            color: Colors.white,
+                                                          ),
+                                                          SizedBox(width: 5),
+                                                          Text(
+                                                            'Edit Info',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: IconButton(
+                        icon: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(
+                            Icons.logout_rounded,
+                            color: Colors.black87,
+                            size: 18,
                           ),
                         ),
+                        onPressed: controller.logout,
+                        tooltip: 'Logout',
                       ),
-                    );
-                  }),
+                    ),
+                  ],
                 ),
-                actions: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: IconButton(
-                      icon: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(
-                          Icons.logout_rounded,
-                          color: Colors.black87,
-                          size: 18,
-                        ),
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: _SliverTabBarDelegate(
+                    TabBar(
+                      labelColor: Colors.black87,
+                      unselectedLabelColor: Colors.grey[400],
+                      indicatorColor: Colors.blueAccent.shade400,
+                      indicatorWeight: 2.5,
+                      indicatorSize: TabBarIndicatorSize.label,
+                      labelStyle: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
+                        letterSpacing: -0.3,
                       ),
-                      onPressed: controller.logout,
-                      tooltip: 'Logout',
+                      tabs: const [
+                        Tab(text: 'PROFILE'),
+                        Tab(text: 'PERSONAL'),
+                        Tab(text: 'DOCUMENTS'),
+                      ],
                     ),
                   ),
-                ],
-              ),
-              SliverPersistentHeader(
-                pinned: true,
-                delegate: _SliverTabBarDelegate(
-                  TabBar(
-                    labelColor: Colors.black87,
-                    unselectedLabelColor: Colors.grey[400],
-                    indicatorColor: Colors.blueAccent.shade400,
-                    indicatorWeight: 2.5,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    labelStyle: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13,
-                      letterSpacing: -0.3,
-                    ),
-                    tabs: const [
-                      Tab(text: 'PROFILE'),
-                      Tab(text: 'PERSONAL'),
-                      Tab(text: 'DOCUMENTS'),
-                    ],
-                  ),
                 ),
-              ),
-            ];
-          },
-          body: TabBarView(
-            children: [
-              _buildProfileTab(),
-              _buildPersonalTab(),
-              _buildDocumentsTab(),
-            ],
+              ];
+            },
+            body: TabBarView(
+              children: [
+                _buildProfileTab(),
+                _buildPersonalTab(),
+                _buildDocumentsTab(),
+              ],
+            ),
           ),
         ),
       ),
@@ -485,13 +506,13 @@ class HomeView extends GetView<HomeController> {
           Icon(
             icon,
             color: isVerified ? Colors.green : Colors.orange,
-            size: 20,
+            size: 22,
           ),
           const SizedBox(height: 6),
           Text(
             label,
             style: TextStyle(
-              fontSize: 11,
+              fontSize: 13,
               fontWeight: FontWeight.w600,
               color: Colors.grey[600],
             ),
@@ -506,7 +527,7 @@ class HomeView extends GetView<HomeController> {
             child: Text(
               isVerified ? 'Verified' : 'Pending',
               style: const TextStyle(
-                fontSize: 9,
+                fontSize: 10,
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
               ),
@@ -853,7 +874,7 @@ class HomeView extends GetView<HomeController> {
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
-                    vertical: 4,
+                    vertical: 7,
                   ),
                   decoration: BoxDecoration(
                     color: controller.isEditEnabled
@@ -880,7 +901,7 @@ class HomeView extends GetView<HomeController> {
                         'Manage Documents',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 12,
+                          fontSize: 13,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -1097,7 +1118,7 @@ class HomeView extends GetView<HomeController> {
                 child: Text(
                   label,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: Colors.grey[600],
                     letterSpacing: -0.2,
@@ -1109,7 +1130,7 @@ class HomeView extends GetView<HomeController> {
                 child: Text(
                   value.isEmpty ? 'N/A' : value,
                   style: const TextStyle(
-                    fontSize: 13,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: Colors.black87,
                     letterSpacing: -0.3,

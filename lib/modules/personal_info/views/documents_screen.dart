@@ -28,40 +28,42 @@ class DocumentsScreen extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
       ),
-      body: Obx(() {
-        if (controller.isLoading.value) {
-          return const Center(
-            child: CircularProgressIndicator(
-              strokeWidth: 2.5,
-              color: Colors.blueAccent,
-            ),
-          );
-        }
+      body: SafeArea(
+        child: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2.5,
+                color: Colors.blueAccent,
+              ),
+            );
+          }
 
-        return CustomScrollView(
-          slivers: [
-            if (controller.selectedDocuments.isNotEmpty)
-              SliverToBoxAdapter(child: _buildUploadSection(controller)),
+          return CustomScrollView(
+            slivers: [
+              if (controller.selectedDocuments.isNotEmpty)
+                SliverToBoxAdapter(child: _buildUploadSection(controller)),
 
-            controller.userDocuments.isEmpty
-                ? SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: _buildEmptyState(),
-                  )
-                : SliverPadding(
-                    padding: const EdgeInsets.all(16),
-                    sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate((context, index) {
-                        final doc = controller.userDocuments[index];
-                        return _buildDocumentCard(doc);
-                      }, childCount: controller.userDocuments.length),
+              controller.userDocuments.isEmpty
+                  ? SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: _buildEmptyState(),
+                    )
+                  : SliverPadding(
+                      padding: const EdgeInsets.all(16),
+                      sliver: SliverList(
+                        delegate: SliverChildBuilderDelegate((context, index) {
+                          final doc = controller.userDocuments[index];
+                          return _buildDocumentCard(doc);
+                        }, childCount: controller.userDocuments.length),
+                      ),
                     ),
-                  ),
-          ],
-        );
-      }),
+            ],
+          );
+        }),
+      ),
       floatingActionButton: Obx(() {
-        final availableTypes = controller.getAvailableDocumentTypes();
+        final availableTypes = controller.documentTypes;
         if (availableTypes.isEmpty) return const SizedBox.shrink();
 
         return FloatingActionButton(
@@ -422,123 +424,128 @@ class DocumentsScreen extends StatelessWidget {
     BuildContext context,
     DocumentController controller,
   ) {
-    final availableTypes = controller.getAvailableDocumentTypes();
+    final availableTypes = controller.documentTypes;
 
     Get.bottomSheet(
-      Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-              decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.grey[200]!)),
-              ),
-              child: Row(
-                children: [
-                  const Text(
-                    'Add Document',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black87,
-                      letterSpacing: -0.3,
+      SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.grey[200]!)),
+                ),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Add Document',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black87,
+                        letterSpacing: -0.3,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () => Get.back(),
-                      borderRadius: BorderRadius.circular(20),
-                      child: Padding(
-                        padding: const EdgeInsets.all(4),
-                        child: Icon(
-                          Icons.close_rounded,
-                          color: Colors.grey[600],
-                          size: 22,
+                    const Spacer(),
+                    Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () => Get.back(),
+                        borderRadius: BorderRadius.circular(20),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Icon(
+                            Icons.close_rounded,
+                            color: Colors.grey[600],
+                            size: 22,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                itemCount: availableTypes.length,
-                itemBuilder: (context, index) {
-                  final type = availableTypes[index];
-                  return Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        controller.addDocument(type);
-                        Get.back();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 14,
-                        ),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 36,
-                              height: 36,
-                              decoration: BoxDecoration(
-                                color: Colors.blueAccent.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: const Icon(
-                                Icons.description_outlined,
-                                color: Colors.blueAccent,
-                                size: 18,
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                type.text,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black87,
+              Flexible(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  itemCount: availableTypes.length,
+                  itemBuilder: (context, index) {
+                    final type = availableTypes[index];
+                    return Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: () {
+                          controller.addDocument(type);
+                          Get.back();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 14,
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 36,
+                                height: 36,
+                                decoration: BoxDecoration(
+                                  color: Colors.blueAccent.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Icon(
+                                  Icons.description_outlined,
+                                  color: Colors.blueAccent,
+                                  size: 18,
                                 ),
                               ),
-                            ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  type.text,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ),
 
-                            type.text == "Police Verification"
-                                ? Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: Icon(
-                                      Icons.local_police,
-                                      color: Colors.red,
-                                      size: 18,
-                                    ),
-                                  )
-                                : SizedBox(),
-                            Icon(
-                              Icons.add_circle_outline,
-                              color: Colors.grey[400],
-                              size: 18,
-                            ),
-                          ],
+                              type.text == "Police Verification"
+                                  ? Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Icon(
+                                        Icons.local_police,
+                                        color: Colors.red,
+                                        size: 18,
+                                      ),
+                                    )
+                                  : SizedBox(),
+                              Icon(
+                                Icons.add_circle_outline,
+                                color: Colors.grey[400],
+                                size: 18,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-          ],
+              const SizedBox(height: 8),
+            ],
+          ),
         ),
       ),
       isScrollControlled: true,

@@ -4,14 +4,12 @@ import 'package:get_storage/get_storage.dart';
 import 'routes/app_pages.dart';
 import 'routes/app_routes.dart';
 import 'services/api_service.dart';
-import 'services/storage_service.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GetStorage.init();
 
-  // Initialize API Service
   Get.put(ApiService());
 
   runApp(MyApp());
@@ -27,7 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: _getInitialRoute(),
+      initialRoute: AppRoutes.SPLASH_SCREEN,
       getPages: AppPages.routes,
       locale: const Locale('en', 'GB'),
       supportedLocales: const [Locale('en', 'GB'), Locale('en', 'US')],
@@ -37,10 +35,5 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
     );
-  }
-
-  String _getInitialRoute() {
-    final user = StorageService.getUser();
-    return user != null ? AppRoutes.HOME : AppRoutes.LOGIN;
   }
 }

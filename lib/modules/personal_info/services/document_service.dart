@@ -32,8 +32,7 @@ class DocumentService {
 
       final response = await dio.Dio(
         dio.BaseOptions(
-          baseUrl:
-              'https://erp.neways3.com/', // Update with your actual endpoint
+          baseUrl: 'https://erp.neways3.com/',
           connectTimeout: const Duration(seconds: 30),
           receiveTimeout: const Duration(seconds: 30),
         ),
@@ -77,7 +76,6 @@ class DocumentService {
     }
   }
 
-  // Upload documents
   Future<DocumentUploadResponse> uploadDocuments(
     DocumentUploadRequest request,
   ) async {
@@ -136,7 +134,6 @@ class DocumentService {
     }
   }
 
-  // Helper method to determine MIME type
   String _getMimeType(String fileName) {
     final extension = fileName.split('.').last.toLowerCase();
     switch (extension) {

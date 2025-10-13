@@ -1,10 +1,21 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:sh_m/core/constants/app_constants.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../routes/app_routes.dart';
 import '../controllers/auth_controller.dart';
 
 class LoginView extends GetView<AuthController> {
+  void _launchPrivacyPolicy() async {
+    final Uri url = Uri.parse(AppConstants.privacyPolicyUrl);
+
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +29,6 @@ class LoginView extends GetView<AuthController> {
               children: [
                 const SizedBox(height: 50),
 
-                // Minimal Logo
                 Container(
                   width: 75,
                   height: 75,
@@ -256,6 +266,33 @@ class LoginView extends GetView<AuthController> {
                 ),
 
                 const SizedBox(height: 28),
+
+                Text.rich(
+                  TextSpan(
+                    text: 'By signing in, you are agree to our ',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: const Color(0xFF6B7280),
+                      height: 1.4,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'Privacy Policy',
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Color(0xFF3B82F6),
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = _launchPrivacyPolicy,
+                      ),
+                      const TextSpan(text: '.'),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 20),
 
                 // Login Button
                 Obx(

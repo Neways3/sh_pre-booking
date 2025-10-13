@@ -101,12 +101,10 @@ class HomeController extends GetxController {
     }
   }
 
-  // NEW: Get status text
   String getStatusText() {
     return memberStatusResponse.value?.memberStatus ?? 'Unknown';
   }
 
-  // NEW: Get status color
   Color getStatusColor() {
     if (memberStatusResponse.value?.memberStatus == null) return Colors.grey;
 
@@ -116,21 +114,20 @@ class HomeController extends GetxController {
 
     switch (statusType) {
       case MemberStatusType.booked:
-        return const Color(0xFF2196F3); // Blue
+        return const Color(0xFF2196F3);
       case MemberStatusType.occupied:
-        return const Color(0xFF4CAF50); // Green
+        return const Color(0xFF4CAF50);
       case MemberStatusType.canceled:
       case MemberStatusType.autoCanceled:
-        return const Color(0xFFE53935); // Red
+        return const Color(0xFFE53935);
       case MemberStatusType.checkoutNotBooked:
-        return const Color(0xFFFF9800); // Orange
+        return const Color(0xFFFF9800);
       case MemberStatusType.notBooked:
       default:
-        return const Color(0xFF757575); // Grey
+        return const Color(0xFF757575);
     }
   }
 
-  // NEW: Get status icon
   IconData getStatusIcon() {
     if (memberStatusResponse.value?.memberStatus == null) {
       return Icons.help_outline;
@@ -156,21 +153,18 @@ class HomeController extends GetxController {
     }
   }
 
-  // NEW: Check if edit is enabled
   bool get isEditEnabled => memberStatusResponse.value?.isEditEnabled ?? false;
 
-  // NEW: Refresh member status
   Future refreshMemberStatus() async {
     await loadMemberStatus();
   }
 
   void refreshUserData() {
     loadUserInfo();
-    loadMemberStatus(); // NEW: Also refresh status
+    loadMemberStatus();
   }
 
   void logout() {
-    // Show confirmation dialog
     Get.dialog(
       AlertDialog(
         backgroundColor: Colors.white,
@@ -180,8 +174,8 @@ class HomeController extends GetxController {
           TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
-              Get.back(); // Close dialog
-              _performLogout(); // Perform logout safely
+              Get.back();
+              _performLogout();
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,

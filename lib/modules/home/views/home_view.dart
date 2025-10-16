@@ -209,6 +209,7 @@ class HomeView extends GetView<HomeController> {
                                             ),
                                             const SizedBox(height: 4),
                                             Wrap(
+                                              runSpacing: 5,
                                               children: [
                                                 MemberStatusBadge(),
                                                 SizedBox(width: 5),

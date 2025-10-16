@@ -86,7 +86,7 @@ class _SplashScreenState extends State<SplashScreen>
                           height: 75,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('assets/icon/icon.png'),
+                              image: AssetImage('assets/icon/icon.jpg'),
                             ),
                             gradient: LinearGradient(
                               colors: [

@@ -5,7 +5,7 @@
   "packages": [
     {
       "name": "sh_m",
-      "version": "1.0.0+2",
+      "version": "1.0.0+1",
       "dependencies": [
         "cupertino_icons",
         "dio",
